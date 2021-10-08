@@ -39,9 +39,7 @@ class ThreeBall extends React.Component {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.ref.appendChild(this.renderer.domElement);
-
     this.camera.position.set(0, 0, 10);
-    // this.scene.fog = new THREE.Fog(synthwave[1], 0, 30);
   }
 
   createControls() {
@@ -59,9 +57,10 @@ class ThreeBall extends React.Component {
     this.scene.add(this.light, point);
   }
 
-  animate(audioData) {
-    let avg = audioData.length
-      ? audioData.reduce((a, b) => a + b) / audioData.length
+  animate() {
+    let avg = this.props.audioData.length
+      ? this.props.audioData.reduce((a, b) => a + b) /
+        this.props.audioData.length
       : 0;
     let change = (avg / 255) * 1 + 1;
 
@@ -78,10 +77,6 @@ class ThreeBall extends React.Component {
     this.torus.scale.y = (avg / 255) * 2.75;
     this.torus.scale.z = (avg / 255) * 2.75;
 
-    // this.particles.scale.x -= this.changer;
-    // this.particles.scale.y -= this.changer;
-    // this.particles.scale.z -= this.changer;
-
     if (Math.abs(this.particles.scale.x) >= 1) this.changer = this.changer * -1;
 
     this.rotate();
@@ -97,8 +92,6 @@ class ThreeBall extends React.Component {
     this.particleSphere.rotation.z -= 0.00125;
     this.particleSphere2.rotation.y += 0.00125;
     this.particleSphere2.rotation.z += 0.00125;
-    // this.torus.rotation.z += 0.01;
-    // this.torus.rotation.y -= 0.01;
   }
 
   drawParticles() {
@@ -106,7 +99,6 @@ class ThreeBall extends React.Component {
     const arr = new Float32Array(num * 3);
     const geo = new THREE.BufferGeometry();
     const mat = new THREE.PointsMaterial({
-      // color: synthwave[0],
       color: purple,
       size: 0.1,
       opacity: 0,
@@ -130,8 +122,6 @@ class ThreeBall extends React.Component {
     });
     this.sphere = new THREE.Mesh(geometry, material);
     this.scene.add(this.sphere);
-    // this.sphere.position.set(0, 0, 0);
-    // this.renderer.render(this.scene, this.camera);
   }
 
   particleSphere() {
@@ -150,13 +140,11 @@ class ThreeBall extends React.Component {
     this.scene.add(this.particleSphere, this.particleSphere2);
   }
 
-  drawTorus() {
+  drawCircle() {
     const geo = new THREE.IcosahedronGeometry(2, 10, 20);
     const mat = new THREE.PointsMaterial({
       color: synthwave[0],
       size: 0.05,
-      // wireframe: true,
-      // shininess: 20,
     });
     this.torus = new THREE.Points(geo, mat);
 
@@ -174,16 +162,15 @@ class ThreeBall extends React.Component {
     this.createControls();
     this.drawSphere();
     this.particleSphere();
-    this.drawTorus();
+    this.drawCircle();
     this.addLight();
     this.drawParticles();
     window.addEventListener("resize", this.onResize);
-    this.animate(this.audioData);
+    this.animate();
   }
 
   componentDidUpdate() {
-    this.animate(this.audioData);
-    // this.renderer.render(this.scene, this.camera);
+    this.animate();
   }
 
   componentWillUnmount() {

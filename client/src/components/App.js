@@ -1,29 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
 import "../styles/app.scss";
-// import Canvas from "./Canvas";
 import AudioAnalyser from "./AudioAnalyser";
-import Search from "./Search";
-// import SpotifyPlayer from "./SpoitfyPlayer";
-// import Login from "./Login";
-import { connect } from "react-redux";
-import { getToken } from "../actions";
+import Buttons from "./Buttons";
 
-const App = ({ getToken }) => {
-  // useEffect(() => {
-  //   getToken();
-  // }, [getToken]);
+class App extends Component {
+  state = { vis: 1 };
 
-  return (
-    <div id="app">
-      {/* <Login /> */}
-      {/* <Canvas /> */}
-      <AudioAnalyser />
-      <Search />
-      {/* <SpotifyPlayer /> */}
-    </div>
-  );
-};
+  setVis = (num) => {
+    if (num === this.state.vis) return;
+    console.log("chaning");
+    this.state.vis = num;
+  };
 
-const mapStateToProps = (state) => state;
+  render() {
+    return (
+      <div id="app">
+        <Buttons setVis={this.setVis} />
+        <AudioAnalyser vis={this.state.vis} />
+      </div>
+    );
+  }
+}
 
-export default connect(mapStateToProps, { getToken })(App);
+export default App;

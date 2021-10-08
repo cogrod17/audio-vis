@@ -2,9 +2,7 @@ import React, { createRef } from "react";
 import Canvas from "./Canvas";
 import ProgressBar from "./ProgressBar";
 import ThreeBall from "./ThreeBall";
-import ThreeGlass from "./ThreeGlass";
 import audioPackage from "../audio/index";
-import { connect } from "react-redux";
 import { playButton, pauseButton, forward } from "../icons";
 
 class AudioAnalyser extends React.Component {
@@ -17,6 +15,7 @@ class AudioAnalyser extends React.Component {
       song: audioPackage[0],
       duration: 0,
       currentTime: 0,
+      vis: this.props.vis,
     };
     this.audioRef = createRef();
     this.gesture = false;
@@ -27,7 +26,7 @@ class AudioAnalyser extends React.Component {
   stop = () => {
     this.audioRef.current.pause();
     this.setState({ ...this.state, playing: false });
-    // this.audioCtx.suspend();
+
     if (this.id) cancelAnimationFrame(this.id);
   };
 
@@ -46,7 +45,6 @@ class AudioAnalyser extends React.Component {
   };
 
   toggle = () => {
-    // this.setState({ ...this.state, playing: !this.state.playing });
     this.checkForGesture();
     !this.state.playing ? this.start() : this.stop();
   };
@@ -57,8 +55,8 @@ class AudioAnalyser extends React.Component {
     ///////////
 
     ///////////
-
-    this.analyser.fftSize = 64;
+    if (this.props.vis === 3) this.analyser.fftSize = 1024;
+    else this.analyser.fftSize = 64;
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
     this.source = this.audioCtx.createMediaElementSource(this.audioRef.current);
     this.source.connect(this.analyser);
@@ -124,17 +122,13 @@ class AudioAnalyser extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <>
         {this.state.dimension === 2 && (
           <Canvas audioData={this.state.audioData} />
         )}
-        {/* {this.state.dimension === 3 && (
-          <ThreeBall audioData={this.state.audioData} />
-        )} */}
         {this.state.dimension === 3 && (
-          <ThreeGlass audioData={this.state.audioData} />
+          <ThreeBall audioData={this.state.audioData} />
         )}
         <div id="audio-wrap">
           <ProgressBar
@@ -162,6 +156,4 @@ class AudioAnalyser extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => state;
-
-export default connect(mapStateToProps)(AudioAnalyser);
+export default AudioAnalyser;

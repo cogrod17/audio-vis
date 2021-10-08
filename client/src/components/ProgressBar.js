@@ -4,7 +4,6 @@ const ProgressBar = ({ currentTime, duration, next }) => {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    // if (currentTime === duration) next();
     if (currentTime === duration && currentTime > 0) next();
 
     setWidth((currentTime / duration) * 100);

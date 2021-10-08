@@ -126,30 +126,6 @@ body {
     "bar bar" 10%
     "info controls" 90%;
 
-  // justify-content: space-evenly;
-  // padding: 10px;
-  // border-radius: 10px;
-
-  // #player-toggle {
-  //   position: absolute;
-  //   top: 0;
-  //   display: inline-block;
-  //   cursor: pointer;
-  //   padding: 5px;
-  //   padding-left: 0;
-  //   font-size: 120%;
-
-  //   // border: white solid 1px;
-  //   transition: all 500ms;
-  // }
-
-  // #album-art {
-  //   // border: green solid 1px;
-  //   height: 250px;
-  //   width: 250px;
-  //   align-self: center;
-  // }
-
   #progress-bar {
     grid-area: bar;
     background: rgb(255, 255, 255);
@@ -187,7 +163,7 @@ body {
 
     svg {
       cursor: pointer;
-      // border: red solid 1px;
+
       align-self: center;
       fill: white;
       height: 30px;
@@ -196,8 +172,25 @@ body {
   }
 }
 
-#threed {
-  // position: absolute;
-  // border: white solid 1px;
-  // background: rgb(0, 0, 0, 0);
+.buttons-wrap {
+  position: absolute;
+  width: 30vw;
+  height: 40px;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  div {
+    cursor: pointer;
+    padding: 2px 10px;
+    background: rgb(255, 255, 255, 0.5);
+    border-radius: 5px;
+    border: rgb(255, 255, 255);
+
+    &:hover {
+      background: rgb(255, 255, 255);
+      color: rgb(0, 0, 0);
+    }
+  }
 }

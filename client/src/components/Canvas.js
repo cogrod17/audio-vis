@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import visualsPackage from "../visualizer-styles";
 // import { initDrops, animateDrops } from "../visualizer-styles/rain";
-import { explodingBass } from "../visualizer-styles/explodingBass";
 
 const ranNum = (max, min = 0) => Math.random() * (max - min) + min;
 
@@ -15,10 +14,7 @@ const Canvas = ({ audioData }) => {
   const ref = useRef();
   const [backgroundColor] = useState("rgb(0,0,0, 0.9)");
 
-  // console.log(audioData);
-
   useEffect(() => {
-    console.log("runnings");
     let canvas = ref.current;
     const ctx = canvas.getContext("2d");
     ctx.canvas.width = window.innerHeight;
@@ -36,33 +32,17 @@ const Canvas = ({ audioData }) => {
 
     init(ctx, w, h, backgroundColor);
 
-    // visualsPackage.growDots(ctx, w, h, audioData);
-
-    const animate = (ctx, w, h, audioData) => {
-      ctx.beginPath();
-      ctx.arc(w / 2, h / 2, 30, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
-      ctx.fill();
-
-      for (const d of audioData) {
-        ctx.beginPath();
-        ctx.arc(w / 2);
-      }
-    };
-
-    // animate(ctx, w, h, audioData);
-
-    //  -----------translates the canvas-----------------------
-    // visualsPackage.swirlingBars(ctx, w, h, audioData, ranNum);
-    // visualsPackage.circleBars(ctx, w, h, audioData, ranNum);
-
-    // -------------does NOT translate the canvas-----------------------
-    // visualsPackage.bars(ctx, w, h, audioData, ranNum);
-    // visualsPackage.rings(ctx, w, h, audioData, ranNum);
-    // visualsPackage["waves"](ctx, w, h, audioData, ranNum, backgroundColor);
+    ///package 1
     // visualsPackage.rain(ctx, w, h, audioData);
+    // visualsPackage.bars(ctx, w, h, audioData, ranNum); // good
+
+    //2
     // visualsPackage.explodingBass(ctx, w, h, audioData);
-    visualsPackage.bass(ctx, w, h, audioData, ranNum);
+    // visualsPackage.bass(ctx, w, h, audioData, ranNum);
+
+    //3
+    //needs bigger fftsize
+    visualsPackage.circleBars(ctx, w, h, audioData, ranNum);
 
     return () => {
       window.removeEventListener("resize", handleResize);
