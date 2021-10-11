@@ -8,8 +8,7 @@ class App extends Component {
 
   setVis = (num) => {
     if (num === this.state.vis) return;
-    console.log("chaning");
-    this.state.vis = num;
+    this.setState({ vis: +num });
   };
 
   render() {

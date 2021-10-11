@@ -21,21 +21,22 @@ class AudioAnalyser extends React.Component {
     this.gesture = false;
     this.audioPackage = audioPackage;
     this.tick = this.tick.bind(this);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
   }
 
-  stop = () => {
+  stop() {
     this.audioRef.current.pause();
     this.setState({ ...this.state, playing: false });
-
     if (this.id) cancelAnimationFrame(this.id);
-  };
+  }
 
-  start = () => {
+  start() {
     if (this.id) cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(this.tick);
     this.audioRef.current.play();
     this.setState({ ...this.state, playing: true });
-  };
+  }
 
   checkForGesture = () => {
     if (!this.gesture) {
@@ -49,14 +50,19 @@ class AudioAnalyser extends React.Component {
     !this.state.playing ? this.start() : this.stop();
   };
 
+  setFftSize = () => {
+    if (!this.analyser) return;
+    if (this.props.vis === 3) this.analyser.fftSize = 1024;
+    else this.analyser.fftSize = 64;
+  };
+
   initAnalyser = () => {
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioCtx.createAnalyser();
     ///////////
 
     ///////////
-    if (this.props.vis === 3) this.analyser.fftSize = 1024;
-    else this.analyser.fftSize = 64;
+    this.setFftSize();
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
     this.source = this.audioCtx.createMediaElementSource(this.audioRef.current);
     this.source.connect(this.analyser);
@@ -74,6 +80,7 @@ class AudioAnalyser extends React.Component {
 
   tick() {
     if (!this.state.playing) return;
+    this.setFftSize();
 
     this.analyser.getByteFrequencyData(this.dataArray);
 
@@ -115,21 +122,23 @@ class AudioAnalyser extends React.Component {
     this.start();
   };
 
-  componentWillUnmount() {
+  disconnect = () => {
     if (this.id) window.cancelAnimationFrame(this.id);
     if (this.analyser) this.analyser.disconnect();
     if (this.source) this.source.disconnect();
+  };
+
+  componentWillUnmount() {
+    this.disconnect();
   }
 
   render() {
     return (
       <>
-        {this.state.dimension === 2 && (
-          <Canvas audioData={this.state.audioData} />
+        {this.props.vis !== 4 && (
+          <Canvas vis={this.props.vis} audioData={this.state.audioData} />
         )}
-        {this.state.dimension === 3 && (
-          <ThreeBall audioData={this.state.audioData} />
-        )}
+        {this.props.vis === 4 && <ThreeBall audioData={this.state.audioData} />}
         <div id="audio-wrap">
           <ProgressBar
             next={this.next}

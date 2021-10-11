@@ -10,7 +10,7 @@ const init = (ctx, w, h, backgroundColor) => {
   ctx.fillRect(0, 0, w, h);
 };
 
-const Canvas = ({ audioData }) => {
+const Canvas = ({ audioData, vis }) => {
   const ref = useRef();
   const [backgroundColor] = useState("rgb(0,0,0, 0.9)");
 
@@ -33,16 +33,23 @@ const Canvas = ({ audioData }) => {
     init(ctx, w, h, backgroundColor);
 
     ///package 1
-    // visualsPackage.rain(ctx, w, h, audioData);
-    // visualsPackage.bars(ctx, w, h, audioData, ranNum); // good
 
     //2
-    // visualsPackage.explodingBass(ctx, w, h, audioData);
-    // visualsPackage.bass(ctx, w, h, audioData, ranNum);
+    if (vis === 1) {
+      visualsPackage.explodingBass(ctx, w, h, audioData);
+      visualsPackage.bass(ctx, w, h, audioData, ranNum);
+    }
 
-    //3
-    //needs bigger fftsize
-    visualsPackage.circleBars(ctx, w, h, audioData, ranNum);
+    if (vis === 2) {
+      visualsPackage.rain(ctx, w, h, audioData);
+      visualsPackage.bars(ctx, w, h, audioData, ranNum);
+    }
+
+    if (vis === 3) {
+      //3
+      //needs bigger fftsize
+      visualsPackage.circleBars(ctx, w, h, audioData, ranNum);
+    }
 
     return () => {
       window.removeEventListener("resize", handleResize);
