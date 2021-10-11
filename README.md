@@ -1,6 +1,6 @@
 # audio-vis
 
-##Overview
+## Overview
 
 ### Features
  - Using the Canvas API and Three.js there are options on how to enjoy some music visualization.
