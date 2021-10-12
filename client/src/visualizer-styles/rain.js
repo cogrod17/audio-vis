@@ -43,7 +43,7 @@ class Drop {
 }
 
 let dropArray = [];
-let numberOfDrops = 100;
+let numberOfDrops = 50;
 let init = false;
 
 const initDrops = (w, h) => {

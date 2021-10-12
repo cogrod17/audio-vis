@@ -14,9 +14,6 @@ const Buttons = ({ setVis }) => {
       <div onClick={change} className="btn-three">
         3
       </div>
-      <div onClick={change} className="btn-four">
-        4
-      </div>
     </div>
   );
 };

@@ -50,11 +50,11 @@ class AudioAnalyser extends React.Component {
     !this.state.playing ? this.start() : this.stop();
   };
 
-  setFftSize = () => {
-    if (!this.analyser) return;
-    if (this.props.vis === 3) this.analyser.fftSize = 1024;
-    else this.analyser.fftSize = 64;
-  };
+  // setFftSize = () => {
+  //   if (!this.analyser) return;
+  //   if (this.props.vis === 3) this.analyser.fftSize = 1024;
+  //   else this.analyser.fftSize = 64;
+  // };
 
   initAnalyser = () => {
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -62,7 +62,7 @@ class AudioAnalyser extends React.Component {
     ///////////
 
     ///////////
-    this.setFftSize();
+    this.analyser.fftSize = 64;
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
     this.source = this.audioCtx.createMediaElementSource(this.audioRef.current);
     this.source.connect(this.analyser);
@@ -80,7 +80,6 @@ class AudioAnalyser extends React.Component {
 
   tick() {
     if (!this.state.playing) return;
-    this.setFftSize();
 
     this.analyser.getByteFrequencyData(this.dataArray);
 
@@ -135,10 +134,10 @@ class AudioAnalyser extends React.Component {
   render() {
     return (
       <>
-        {this.props.vis !== 4 && (
+        {this.props.vis !== 3 && (
           <Canvas vis={this.props.vis} audioData={this.state.audioData} />
         )}
-        {this.props.vis === 4 && <ThreeBall audioData={this.state.audioData} />}
+        {this.props.vis === 3 && <ThreeBall audioData={this.state.audioData} />}
         <div id="audio-wrap">
           <ProgressBar
             next={this.next}

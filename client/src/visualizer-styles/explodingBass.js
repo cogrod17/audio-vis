@@ -13,9 +13,6 @@ class Pixel {
   update = (w, h, arr) => {
     this.x += this.pathX;
     this.y += this.pathY;
-    // this.radius -= 0.0125;
-    // this.pathX += ranNum(0.2, -0.2);
-    // this.pathY += ranNum(0.2, -0.2);
 
     if (
       this.x >= w ||

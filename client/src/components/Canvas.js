@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import visualsPackage from "../visualizer-styles";
-// import { initDrops, animateDrops } from "../visualizer-styles/rain";
 
 const ranNum = (max, min = 0) => Math.random() * (max - min) + min;
 
@@ -32,8 +31,6 @@ const Canvas = ({ audioData, vis }) => {
 
     init(ctx, w, h, backgroundColor);
 
-    ///package 1
-
     //2
     if (vis === 1) {
       visualsPackage.explodingBass(ctx, w, h, audioData);
@@ -43,12 +40,6 @@ const Canvas = ({ audioData, vis }) => {
     if (vis === 2) {
       visualsPackage.rain(ctx, w, h, audioData);
       visualsPackage.bars(ctx, w, h, audioData, ranNum);
-    }
-
-    if (vis === 3) {
-      //3
-      //needs bigger fftsize
-      visualsPackage.circleBars(ctx, w, h, audioData, ranNum);
     }
 
     return () => {

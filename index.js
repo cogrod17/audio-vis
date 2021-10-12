@@ -1,8 +1,15 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 
-const port = process.env.port || 3001;
+const port = process.env.PORT;
 
-app.listen(port, () => {
-  console.log("AUDIO-VIS up on " + port);
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
+app.listen(port);
